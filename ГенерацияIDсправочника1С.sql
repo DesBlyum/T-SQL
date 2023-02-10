@@ -1,7 +1,7 @@
--- копирование разделов(групп) справочника ...
--- из-за специфики 1С и настройки БД требуется доп. приседания для переноса данных справочника
+-- РєРѕРїРёСЂРѕРІР°РЅРёРµ СЂР°Р·РґРµР»РѕРІ(РіСЂСѓРїРї) СЃРїСЂР°РІРѕС‡РЅРёРєР° ...
+-- РёР·-Р·Р° СЃРїРµС†РёС„РёРєРё 1РЎ Рё РЅР°СЃС‚СЂРѕР№РєРё Р‘Р” С‚СЂРµР±СѓРµС‚СЃСЏ РґРѕРї. РїСЂРёСЃРµРґР°РЅРёСЏ РґР»СЏ РїРµСЂРµРЅРѕСЃР° РґР°РЅРЅС‹С… СЃРїСЂР°РІРѕС‡РЅРёРєР°
 DECLARE @MaxID char(12)
-SELECT @MaxID = dbo.Convert36To10(LEFT(MAX(ID),6)) FROM [dbo].SC18218 WHERE RIGHT(ID,3) = 'ЦИБ'
+SELECT @MaxID = dbo.Convert36To10(LEFT(MAX(ID),6)) FROM [dbo].SC18218 WHERE RIGHT(ID,3) = 'Г–Г€ГЃ'
 
 INSERT INTO [SC18218]
         (ID
@@ -13,13 +13,12 @@ INSERT INTO [SC18218]
         ,[VERSTAMP]
         ,[SP18215]
         ,[SP18216]
-        ,[SP18227]
-        )
+        ,[SP18227])
 SELECT
-	dbo.Convert10To36(CAST(ROW_NUMBER() OVER(ORDER BY t.ID) as bigint) + @MaxID) + 'ЦИБ' as ID,
+	dbo.Convert10To36(CAST(ROW_NUMBER() OVER(ORDER BY t.ID) as bigint) + @MaxID) + 'Г–Г€ГЃ' as ID,
 	ParentID,
 	(CODE+200) as CODE,
-	RTRIM(Descr)+'_дискаунтер',
+	RTRIM(Descr)+'_Г¤ГЁГ±ГЄГ ГіГ­ГІГҐГ°',
 	isfolder,
 	ismark,
 	0 as VERSTAMP,
