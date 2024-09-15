@@ -4,10 +4,11 @@
 * создание, изменение и получение данных или объектов, значения или названия которых приходят в качестве параметров.
 ***********************************/
 
--- Составление текста запроса со вставками и выполение через EXEC/EXECUTE
-DECLARE @sql         VARCHAR(1000)
-DECLARE @columnList  VARCHAR(100)
-DECLARE @nameTable   VARCHAR(100)
+-- ����������� ������ ������� �� ��������� � ��������� ����� EXEC/EXECUTE
+-- ��� ����� ������� �������� SQL ��������. ��������, ����� ������ �������� ����� ������ @nameTable = 'DROP TABLE Test'
+DECLARE @sql		VARCHAR(1000)
+DECLARE @columnList VARCHAR(100)
+DECLARE @nameTable	VARCHAR(100)
 
 SET @columnList = 'ID'
 SET @nameTable	= 'Test'
@@ -25,7 +26,7 @@ DECLARE @ret		    INT
 
 SET @sqlCommand = N'SELECT @ret = MAX(ID) FROM Test WHERE ID = @value'
 SET @ParmDef	= N'@value int, @ret int OUT'
-SET @value	= 5
+SET @value		= 5
 
 EXEC sp_executesql @sqlCommand, @ParmDef, @value = @value, @ret = @ret OUT
 
@@ -40,5 +41,23 @@ SET @nameTable	= 'Test'
 SET @sqlCommand = 'SELECT @ret = MAX(ID) FROM ' + @nameTable
 
 EXEC sp_executesql @sqlCommand, N'@ret int OUT', @ret = @ret OUT
+
+SELECT @ret
+
+-- �������� ������������ ������� � �������� ��������� 
+--(������������ QUOTENAME() - ���������� ������ ������� � �������������, ������������, ����� ������� ������� ������ ���������� ��������������� ����������� SQL Server)
+DECLARE @sqlCommand NVARCHAR(1000)
+DECLARE @ParmDef	NVARCHAR(1000)
+DECLARE @nameTable	NVARCHAR(500)
+DECLARE @value		INT
+DECLARE @ret		INT
+
+SET @nameTable	= 'Test'
+SET @value		= 5
+
+SET @sqlCommand = N'SELECT @ret = MAX(ID) FROM  '+ QuoteName(@nameTable) + 'WHERE ID = @value'
+SET @ParmDef	= N'@value int, @ret int OUT'
+
+EXEC sp_executesql @sqlCommand, @ParmDef, @value = @value, @ret = @ret OUT
 
 SELECT @ret
