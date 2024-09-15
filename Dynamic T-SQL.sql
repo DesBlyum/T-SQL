@@ -1,13 +1,13 @@
 /**********************************
-* Примеры и вариации использования dynamic T-Sql
-* Инструмент, который используется для решения задач по построению динамичных отчётов, миграция данных,
-* создание, изменение и получение данных или объектов, значения или названия которых приходят в качестве параметров.
+* РџСЂРёРјРµСЂС‹ Рё РІР°СЂРёР°С†РёРё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ dynamic T-Sql
+* РРЅСЃС‚СЂСѓРјРµРЅС‚, РєРѕС‚РѕСЂС‹Р№ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СЂРµС€РµРЅРёСЏ Р·Р°РґР°С‡ РїРѕ РїРѕСЃС‚СЂРѕРµРЅРёСЋ РґРёРЅР°РјРёС‡РЅС‹С… РѕС‚С‡С‘С‚РѕРІ, РјРёРіСЂР°С†РёСЏ РґР°РЅРЅС‹С…,
+* СЃРѕР·РґР°РЅРёРµ, РёР·РјРµРЅРµРЅРёРµ Рё РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… РёР»Рё РѕР±СЉРµРєС‚РѕРІ, Р·РЅР°С‡РµРЅРёСЏ РёР»Рё РЅР°Р·РІР°РЅРёСЏ РєРѕС‚РѕСЂС‹С… РїСЂРёС…РѕРґСЏС‚ РІ РєР°С‡РµСЃС‚РІРµ РїР°СЂР°РјРµС‚СЂРѕРІ.
 ***********************************/
 
--- Составление текста запроса со вставками и выполение через EXEC/EXECUTE
-DECLARE @sql varchar(1000)
-DECLARE @columnList varchar(100)
-DECLARE @nameTable varchar(100)
+-- РЎРѕСЃС‚Р°РІР»РµРЅРёРµ С‚РµРєСЃС‚Р° Р·Р°РїСЂРѕСЃР° СЃРѕ РІСЃС‚Р°РІРєР°РјРё Рё РІС‹РїРѕР»РµРЅРёРµ С‡РµСЂРµР· EXEC/EXECUTE
+DECLARE @sql         VARCHAR(1000)
+DECLARE @columnList  VARCHAR(100)
+DECLARE @nameTable   VARCHAR(100)
 
 SET @columnList = 'ID'
 SET @nameTable	= 'Test'
@@ -16,12 +16,12 @@ SELECT @sql = 'SELECT ' + @columnList + ' FROM ' +  @nameTable
 
 EXEC (@sql)
 
--- C использование хранимой процедуры sp_executesql
--- Константы Юникода должны быть префиксированы с помощью .N 
+-- C РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ С…СЂР°РЅРёРјРѕР№ РїСЂРѕС†РµРґСѓСЂС‹ sp_executesql
+-- РљРѕРЅСЃС‚Р°РЅС‚С‹ Р®РЅРёРєРѕРґР° РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РїСЂРµС„РёРєСЃРёСЂРѕРІР°РЅС‹ СЃ РїРѕРјРѕС‰СЊСЋ .N 
 DECLARE @sqlCommand NVARCHAR(1000)
-DECLARE @ParmDef	NVARCHAR(1000)
-DECLARE @value		INT
-DECLARE @ret		INT
+DECLARE @ParmDef	  NVARCHAR(1000)
+DECLARE @value		  INT
+DECLARE @ret		    INT
 
 SET @sqlCommand = N'SELECT @ret = MAX(ID) FROM Test WHERE ID = @value'
 SET @ParmDef	= N'@value int, @ret int OUT'
@@ -31,10 +31,10 @@ EXEC sp_executesql @sqlCommand, @ParmDef, @value = @value, @ret = @ret OUT
 
 SELECT @ret
 
--- Смешанный стиль
+-- РЎРјРµС€Р°РЅРЅС‹Р№ СЃС‚РёР»СЊ
 DECLARE @sqlCommand NVARCHAR(1000)
 DECLARE @nameTable	NVARCHAR(100)
-DECLARE @ret		INT
+DECLARE @ret		    INT
 
 SET @nameTable	= 'Test'
 SET @sqlCommand = 'SELECT @ret = MAX(ID) FROM ' + @nameTable
