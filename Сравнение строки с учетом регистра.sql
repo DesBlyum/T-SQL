@@ -1,38 +1,38 @@
 -- MS SQL
-IF ASCII('саратов') = ASCII('САРАТОВ')
+IF ASCII('СЃР°СЂР°С‚РѕРІ') = ASCII('РЎРђР РђРўРћР’')
 BEGIN
-	SELECT 'Одно и тоже'
+	SELECT 'РћРґРЅРѕ Рё С‚РѕР¶Рµ'
 END
 ELSE
 BEGIN
-	SELECT 'Различны'
+	SELECT 'Р Р°Р·Р»РёС‡РЅС‹'
 END
 
-IF UNICODE('саратов') = UNICODE('САРАТОВ')
+IF UNICODE('СЃР°СЂР°С‚РѕРІ') = UNICODE('РЎРђР РђРўРћР’')
 BEGIN
-	SELECT 'Одно и тоже'
+	SELECT 'РћРґРЅРѕ Рё С‚РѕР¶Рµ'
 END
 ELSE
 BEGIN
-	SELECT 'Различны'
+	SELECT 'Р Р°Р·Р»РёС‡РЅС‹'
 END
 
 
 -- Sybase
-IF dbo.str_value_ascii('саратов') = dbo.str_value_ascii('САРАТОВ')
+IF dbo.str_value_ascii('СЃР°СЂР°С‚РѕРІ') = dbo.str_value_ascii('РЎРђР РђРўРћР’')
 BEGIN
-	SELECT 'Одно и тоже'
+	SELECT 'РћРґРЅРѕ Рё С‚РѕР¶Рµ'
 END
 ELSE
 BEGIN
-	SELECT 'Различны'
+	SELECT 'Р Р°Р·Р»РёС‡РЅС‹'
 END
 
-IF CONVERT(unichar(8000),'саратов') = CONVERT(unichar(8000),'САРАТОВ')
+IF CONVERT(unichar(8000),'СЃР°СЂР°С‚РѕРІ') = CONVERT(unichar(8000),'РЎРђР РђРўРћР’')
 BEGIN
-	SELECT 'Одно и тоже'
+	SELECT 'РћРґРЅРѕ Рё С‚РѕР¶Рµ'
 END
 ELSE
 BEGIN
-	SELECT 'Различны'
+	SELECT 'Р Р°Р·Р»РёС‡РЅС‹'
 END
