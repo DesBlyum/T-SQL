@@ -4,7 +4,8 @@
 *	1. Having count(*)
 *	2. Оконная функция ROW_NUMBER()
 *	3. WITH - временный результирующий набор(CTE)
-*	4. LEFT JOIN
+*	4. JOIN
+*	5. Функция ранжирования rank()
 * 
 *******************************************************************************************************/
 -- Создание таблицы для тестирования
@@ -75,7 +76,7 @@ SELECT
 FROM (
 		SELECT 
 			t.id,
-			ROW_NUMBER() OVER(Partition By t.col_int, t.col_num ORDER by ID) Rownum
+			ROW_NUMBER() OVER(PARTITION BY t.col_int, t.col_num ORDER BY ID) Rownum
 		FROM 
 			t
 	)tbl
@@ -92,7 +93,7 @@ WHERE id IN (
 				FROM (
 						SELECT 
 							t.id,
-							ROW_NUMBER() OVER(Partition By t.col_int, t.col_num ORDER by ID DESC) Rownum
+							ROW_NUMBER() OVER(PARTITION BY t.col_int, t.col_num ORDER BY ID DESC) Rownum
 						FROM 
 							t
 					)tbl
@@ -110,7 +111,7 @@ WITH CTE (
 AS (SELECT 
 		col_int,
 		col_num,
-	    ROW_NUMBER() OVER(Partition By t.col_int, t.col_num ORDER by ID) AS Rownum
+	    ROW_NUMBER() OVER(PARTITION BY t.col_int, t.col_num ORDER BY ID) AS Rownum
 	FROM 
 		t)
 DELETE FROM CTE
@@ -135,3 +136,44 @@ WHERE id IN (
 			WHERE
 				t2.id is NULL
 			)
+
+
+-- Вариант 5.
+-- Выборка дублей с использованием rank()
+SELECT 
+	t1.col_int,
+	t1.col_num, 
+	t2.ranking
+FROM
+	t as t1
+INNER JOIN
+	(SELECT 
+		*,
+		rank() OVER(PARTITION BY col_int, col_num ORDER BY id) as ranking
+	FROM
+		t
+	) as t2
+	ON t1.id = t2.id
+WHERE
+	ranking > 1
+
+-- Удаление дублей rank()
+DELETE
+FROM	
+	t
+WHERE 
+	ID IN (
+			SELECT 
+				t1.id
+			FROM
+				t as t1
+			INNER JOIN
+				(SELECT 
+					*,
+					rank() OVER(PARTITION BY col_int, col_num ORDER BY id) as ranking
+				FROM
+					t
+				) as t2
+				ON t1.id = t2.id
+			WHERE
+				ranking > 1)
